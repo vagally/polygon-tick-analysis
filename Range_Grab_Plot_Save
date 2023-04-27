@@ -1,0 +1,100 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "22b6ff40-c042-47ec-9051-e5d1768a5493",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "## This code retrieves stock tick data for a list of specific stocks using the\n",
+    "## Polygon REST API, creates PNGs and exports them. I use the \"polygon.IO\"\n",
+    "## library to communicate with the API. The output is\n",
+    "## then printed to the console and to files.\n",
+    "## edit the [stocks] parameter to retrieve the ones you want.\n",
+    "## edit the GTE & LTE values to set a window of time: must use UNIX epoch in nanoseconds.\n",
+    "## This was tested on about 5 minutes of tick data only. \n",
+    "\n",
+    "from polygon import RESTClient\n",
+    "import matplotlib.pyplot as plt\n",
+    "\n",
+    "# client = RESTClient(\"XXXXXX\") # hardcoded api_key is used\n",
+    "client = RESTClient()  # POLYGON_API_KEY environment variable is used\n",
+    "\n",
+    "#the NASDAQ 100\n",
+    "#stocks = [\"ATVI\",\"ADBE\",\"ADP\",\"ABNB\",\"ALGN\",\"GOOGL\",\"GOOG\",\"AMZN\",\"AMD\",\"AEP\",\"AMGN\",\"ADI\",\"ANSS\",\"AAPL\",\"AMAT\",\"ASML\",\"AZN\",\"TEAM\",\"ADSK\",\"BKR\",\"BIIB\",\"BKNG\",\"AVGO\",\"CDNS\",\"CHTR\",\"CTAS\",\"CSCO\",\"CTSH\",\"CMCSA\",\"CEG\",\"CPRT\",\"CSGP\",\"COST\",\"CRWD\",\"CSX\",\"DDOG\",\"DXCM\",\"FANG\",\"DLTR\",\"EBAY\",\"EA\",\"ENPH\",\"EXC\",\"FAST\",\"FISV\",\"FTNT\",\"GILD\",\"GFS\",\"HON\",\"IDXX\",\"ILMN\",\"INTC\",\"INTU\",\"ISRG\",\"JD\",\"KDP\",\"KLAC\",\"KHC\",\"LRCX\",\"LCID\",\"LULU\",\"MAR\",\"MRVL\",\"MELI\",\"META\",\"MCHP\",\"MU\",\"MSFT\",\"MRNA\",\"MDLZ\",\"MNST\",\"NFLX\",\"NVDA\",\"NXPI\",\"ORLY\",\"ODFL\",\"PCAR\",\"PANW\",\"PAYX\",\"PYPL\",\"PDD\",\"PEP\",\"QCOM\",\"REGN\",\"RIVN\",\"ROST\",\"SGEN\",\"SIRI\",\"SBUX\",\"SNPS\",\"TMUS\",\"TSLA\",\"TXN\",\"VRSK\",\"VRTX\",\"WBA\",\"WBD\",\"WDAY\",\"XEL\",\"ZM\",\"ZS\"]\n",
+    "stocks = [\"GOOG\", \"META\", \"MSFT\", \"AAPL\", \"SPY\" ]\n",
+    "\n",
+    "GTE = 1678800601000000000\n",
+    "LTE = 1678800801000000000\n",
+    "\n",
+    "for candy in stocks:\n",
+    "    \n",
+    "    count = 0\n",
+    "    prices = []\n",
+    "    ticks = []\n",
+    "    trades = []\n",
+    "    \n",
+    "    for t in client.list_trades(ticker=candy,timestamp_gte=GTE,timestamp_lte=LTE,order=\"asc\",sort=\"timestamp\",limit=50000):\n",
+    "        trades.append(t)\n",
+    "\n",
+    "    for i in trades:\n",
+    "        count += 1\n",
+    "        line = []\n",
+    "        line = str(i)\n",
+    "\n",
+    "        x2 = line.partition(\"price=\")[2]\n",
+    "        x3 = line.partition(\"sip_timestamp=\")[2]\n",
+    "        x2 = x2.split(\",\")[0]\n",
+    "        x3 = x3.split(\",\")[0]\n",
+    "    \n",
+    "        prices.append(round(float(x2),2))\n",
+    "        ticks.append(int(x3))\n",
+    "    \n",
+    "        if len(prices) != len (ticks):\n",
+    "            print(\"Count mismatch between data points...very bad!\")\n",
+    "            break\n",
+    "\n",
+    "    plt.scatter(ticks,prices,s=2)\n",
+    "    plt.title(\"Tick data for: \"+candy+\" (\"+str(count)+\" ticks)\", fontsize = 10, fontweight ='bold')\n",
+    "    plt.xlabel(\"9:30:00 <--------> 9:35:00\")\n",
+    "    plt.ylabel(\"price\")\n",
+    "    ##save PNG to disk\n",
+    "    plt.savefig(\"RESULTS/\"+candy+\"_abc.png\")\n",
+    "    plt.show()\n",
+    "#\n",
+    "#\n",
+    "#"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bd938c37-ec35-4c00-bb4e-b87fa969c0f1",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.9"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
