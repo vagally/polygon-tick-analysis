@@ -19,6 +19,5 @@ To get started, copy this file to your own Jupyter Notebook and make the edits a
 * end time = LTE
 * stock list -- up to you.
 
-
-##Enjoy 
+## Enjoy 
 Let me know if you have any questions.
