@@ -14,11 +14,10 @@ I found a Tiktoker (@20_minute_trader) who was promoting a reliable pattern in a
 To get started, copy this file to your own Jupyter Notebook and make the edits and off you go.  This is very simple python, and can be optimized for sure.  But I liked how quickly I was able to go from zero to done.
 
 ## Required Inputs
-API key
-begin time = GTE
-end time = LTE
-stock list -- up to you.
+* API key
+* begin time = GTE
+* end time = LTE
+* stock list -- up to you.
 
-The "client.list_trades" function pulls down the tick data on each stock in the time window you select.
 
 Enjoy and let me know if you have any questions.
