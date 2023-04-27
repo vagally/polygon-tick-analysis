@@ -20,4 +20,5 @@ To get started, copy this file to your own Jupyter Notebook and make the edits a
 * stock list -- up to you.
 
 
-Enjoy and let me know if you have any questions.
+##Enjoy 
+Let me know if you have any questions.
